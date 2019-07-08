@@ -1,1 +1,1 @@
-# stylekit-update
+# stylekit-updater
