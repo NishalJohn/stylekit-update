@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Stylekit Updater</title>
+    <script src="stylekit-updater.js"></script>
+    <script src="JQuery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        $(document).ready(function () {
+            $('.jsonfileinput').change(function (e) {
+                onChange(e);
+            });
+
+            function onChange(event) {
+                this.isOldFile = $(event.target).hasClass('old');
+                var reader = new FileReader();
+                if (isOldFile) {
+                    reader.onload = onReaderLoad_Old;
+                    reader.readAsText(event.target.files[0]);
+                } else {
+                    reader.onload = onReaderLoad_New;
+                    reader.readAsText(event.target.files[0]);
+                }
+
+            }
+
+            function onReaderLoad_Old(event) {
+                var obj = JSON.parse(event.target.result);
+                setJSONS(obj, "old");
+            }
+
+            function onReaderLoad_New(event) {
+                var obj = JSON.parse(event.target.result);
+                setJSONS(obj, "new");
+            }
+
+            $("#compile").click(function () {
+                compileJSON();
+            });
+
+            $('.copy-Text').click(function (e) {
+                e.preventDefault();
+                var id = $(e.target).data('for');
+                var inputFeild = $('#' + id)[0];
+                $(inputFeild).removeAttr("disabled");
+                inputFeild.select();
+                document.execCommand("copy");
+                $(inputFeild).attr("disabled");
+                $(inputFeild).addClass('copied');
+            });
+
+            $('.download').click(function (e) {
+                e.preventDefault();
+                initDownload();
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-6 just-cont">
+                    <h3> Choose an The Old Stylekit You Wish to Update</h3>
+                    <h6> Leave Blank if you wish to use the default Stylekit</h6>
+                    <input class="jsonfileinput btn btn-info old" type="file" name="jsonfile">
+                </div>
+                <div class="col-6 just-cont">
+                    <h3> Choose an The New Stylekit You Wish to Merge</h3>
+                    <h6> This will Copy all Feilds to the old stylekit</h6>
+                    <input class="jsonfileinput btn btn-info new" type="file" name="jsonfile">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col just-cont">
+                    <div class="merge"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col just-cont">
+                    <button type="button" id="compile" class="btn btn-primary compile">Compile</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class="copy-Text" data-for="compiledJSON">COPY</label>
+                </div>
+                <div class="col flx-end">
+                        <button type="button" id="download" class="btn btn-success download hide">Download</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <textarea disabled="" id="compiledJSON" class="copy-input"></textarea>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>
