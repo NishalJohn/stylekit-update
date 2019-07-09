@@ -17,6 +17,7 @@ function compileJSON() {
 }
 
 function cacheMediaQueries(oldJson) {
+    this.mediaQ_screenPrint = oldJson['@media screen, print'];
     this.mediaQ_1600 = oldJson['@media (max-width : 1600px)'];
     this.mediaQ_1200 = oldJson['@media (max-width : 1200px)'];
     this.mediaQ_993 = oldJson['@media (max-width : 993px)'];
@@ -26,6 +27,7 @@ function cacheMediaQueries(oldJson) {
 }
 
 function mergeStylekit(newJSON) {
+    newJSON['@media screen, print'] = this.mediaQ_screenPrint;
     newJSON['@media (max-width : 1600px)'] = this.mediaQ_1600;
     newJSON['@media (max-width : 1200px)'] = this.mediaQ_1200;
     newJSON['@media (max-width : 993px)'] = this.mediaQ_993;
